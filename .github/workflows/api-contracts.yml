@@ -7,7 +7,7 @@ on:
   pull_request:
 
 jobs:
-  check:
+  check-proto:
     runs-on: ubuntu-latest
     env:
       PROTO_DIR: ./protos
@@ -42,6 +42,25 @@ jobs:
         with:
           against: '${{ github.server_url }}/${{ github.repository }}.git#branch=${{ github.base_ref }},subdir=${{ env.PROTO_DIR }}'
           input: ${{ env.PROTO_DIR }}
+
+  check-gen:
+    runs-on: ubuntu-latest
+    env:
+      PROTO_DIR: ./protos
+      GEN_DIR: ./gen
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup Buf Build
+        uses: bufbuild/buf-setup-action@v1
+        with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Setup Go
+        uses: actions/setup-go@v4
+        with:
+          go-version-file: ${{ env.GEN_DIR }}/go/go.mod
 
       - name: Generate
         env:
