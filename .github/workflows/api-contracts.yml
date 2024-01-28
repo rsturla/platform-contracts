@@ -73,6 +73,7 @@ jobs:
           buf generate --output $GEN_DIR --template $GEN_DIR/buf.gen.yaml $PROTO_DIR
 
       - name: Check Go Mod
+        working-directory: ${{ env.GEN_DIR }}/go
         run: go mod tidy
 
       - name: Check Changed Files
