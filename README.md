@@ -1,1 +1,1 @@
-# platform-contracts
+# Platform Contracts
