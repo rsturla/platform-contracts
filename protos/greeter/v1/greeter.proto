@@ -1,9 +1,14 @@
 syntax = "proto3";
-
 package greeter.v1;
 
+import "common/v1/common.proto";
+
 service GreeterService {
-  rpc SayHello(SayHelloRequest) returns (SayHelloResponse) {}
+  rpc SayHello(SayHelloRequest) returns (SayHelloResponse) {
+    option (common.v1.handler).path = "/v1/greeter/say_hello";
+    option (common.v1.handler).method = "POST";
+    option (common.v1.humans_who_can_rpc) = HUMANS_WHO_CAN_RPC_CONTRIBUTORS;
+  }
 }
 
 message SayHelloRequest {
