@@ -1,0 +1,11 @@
+---
+version: v1
+managed:
+  enabled: true
+  go_package_prefix:
+    default: github.com/rsturla/platform-contracts/gen/go
+plugins:
+  - plugin: buf.build/protocolbuffers/go:v1.32.0
+    out: ./go
+    opt:
+      - paths=source_relative

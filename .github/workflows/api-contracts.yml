@@ -1,0 +1,92 @@
+name: API Contracts
+
+on:
+  push:
+    branches:
+      - main
+  pull_request:
+
+jobs:
+  check-proto:
+    runs-on: ubuntu-latest
+    env:
+      PROTO_DIR: ./protos
+      GEN_DIR: ./gen
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup Buf Build
+        uses: bufbuild/buf-setup-action@v1
+        with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Setup Go
+        uses: actions/setup-go@v4
+        with:
+          go-version-file: ${{ env.GEN_DIR }}/go/go.mod
+
+      - name: Format
+        env:
+          PROTO_DIR: ${{ env.PROTO_DIR }}
+        run: buf format --path $PROTO_DIR --exit-code --diff
+
+      - name: Lint
+        uses: bufbuild/buf-lint-action@v1
+        with:
+          input: ${{ env.PROTO_DIR }}
+
+      - name: Check Breaking Changes
+        uses: bufbuild/buf-breaking-action@a074e988ee34efcd4927079e79c611f428354c01 # v1
+        if: github.event_name == 'pull_request'
+        with:
+          against: '${{ github.server_url }}/${{ github.repository }}.git#branch=${{ github.base_ref }},subdir=${{ env.PROTO_DIR }}'
+          input: ${{ env.PROTO_DIR }}
+
+  check-gen:
+    runs-on: ubuntu-latest
+    env:
+      PROTO_DIR: ./protos
+      GEN_DIR: ./gen
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup Buf Build
+        uses: bufbuild/buf-setup-action@v1
+        with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Setup Go
+        uses: actions/setup-go@v4
+        with:
+          go-version-file: ${{ env.GEN_DIR }}/go/go.mod
+
+      - name: Generate
+        env:
+          PROTO_DIR: ${{ env.PROTO_DIR }}
+          GEN_DIR: ${{ env.GEN_DIR }}
+        run: |
+          echo "Removing existing libraries"
+          find $GEN_DIR -name "*.pb.go" -type f -delete
+          echo "Generating libraries"
+          buf generate --output $GEN_DIR --template $GEN_DIR/buf.gen.yaml $PROTO_DIR
+
+      - name: Check Go Mod
+        working-directory: ${{ env.GEN_DIR }}/go
+        run: go mod tidy
+
+      - name: Check Changed Files
+        id: check-changed-files
+        env:
+          GEN_DIR: ${{ env.GEN_DIR }}
+        run: |
+          CHANGED_FILES=$(git status --porcelain $GEN_DIR)
+          if [ -n "$CHANGED_FILES" ]; then
+            echo "FILES_CHANGED=true" >> $GITHUB_OUTPUT
+            echo "Detected changes in files"
+            exit 1
+          else
+            echo "FILES_CHANGED=false" >> $GITHUB_OUTPUT
+            echo "No changes in files"
+          fi
