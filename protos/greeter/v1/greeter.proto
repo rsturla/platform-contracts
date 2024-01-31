@@ -5,9 +5,8 @@ import "common/v1/common.proto";
 
 service GreeterService {
   rpc SayHello(SayHelloRequest) returns (SayHelloResponse) {
-    option (common.v1.handler).path = "/v1/greeter/say_hello";
-    option (common.v1.handler).method = "POST";
-    option (common.v1.humans_who_can_rpc) = HUMANS_WHO_CAN_RPC_CONTRIBUTORS;
+    option (common.v1.http).get = "/v1/greeter/say_hello";
+    option (common.v1.humans_who_can_rpc) = HUMANS_WHO_CAN_RPC_CONTRIBUTORS_WITH_APPROVAL;
   }
 }
 

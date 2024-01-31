@@ -1,12 +1,8 @@
 syntax = "proto3";
 package common.v1;
 
+import "google/api/http.proto";
 import "google/protobuf/descriptor.proto";
-
-extend google.protobuf.MethodOptions {
-  Handler handler = 50000;
-  HumansWhoCanRpc humans_who_can_rpc = 50001;
-}
 
 enum HumansWhoCanRpc {
   HUMANS_WHO_CAN_RPC_UNSPECIFIED = 0;
@@ -15,7 +11,7 @@ enum HumansWhoCanRpc {
   HUMANS_WHO_CAN_RPC_ALL_HUMANS = 3;
 }
 
-message Handler {
-  string path = 1;
-  string method = 2;
+extend google.protobuf.MethodOptions {
+  HumansWhoCanRpc humans_who_can_rpc = 50000;
+  google.api.HttpRule http = 72295728;
 }
