@@ -7,7 +7,7 @@
 package commonv1
 
 import (
-	api "github.com/rsturla/platform-contracts/gen/go/google/api"
+	annotations "google.golang.org/genproto/googleapis/api/annotations"
 	protoreflect "google.golang.org/protobuf/reflect/protoreflect"
 	protoimpl "google.golang.org/protobuf/runtime/protoimpl"
 	descriptorpb "google.golang.org/protobuf/types/descriptorpb"
@@ -85,7 +85,7 @@ var file_common_v1_common_proto_extTypes = []protoimpl.ExtensionInfo{
 	},
 	{
 		ExtendedType:  (*descriptorpb.MethodOptions)(nil),
-		ExtensionType: (*api.HttpRule)(nil),
+		ExtensionType: (*annotations.HttpRule)(nil),
 		Field:         72295728,
 		Name:          "common.v1.http",
 		Tag:           "bytes,72295728,opt,name=http",
@@ -162,7 +162,7 @@ var file_common_v1_common_proto_enumTypes = make([]protoimpl.EnumInfo, 1)
 var file_common_v1_common_proto_goTypes = []interface{}{
 	(HumansWhoCanRpc)(0),               // 0: common.v1.HumansWhoCanRpc
 	(*descriptorpb.MethodOptions)(nil), // 1: google.protobuf.MethodOptions
-	(*api.HttpRule)(nil),               // 2: google.api.HttpRule
+	(*annotations.HttpRule)(nil),       // 2: google.api.HttpRule
 }
 var file_common_v1_common_proto_depIdxs = []int32{
 	1, // 0: common.v1.humans_who_can_rpc:extendee -> google.protobuf.MethodOptions
