@@ -13,5 +13,5 @@ enum HumansWhoCanRpc {
 
 extend google.protobuf.MethodOptions {
   HumansWhoCanRpc humans_who_can_rpc = 50000;
-  google.api.HttpRule http = 72295728;
+  google.api.HttpRule http = 72295727;
 }
