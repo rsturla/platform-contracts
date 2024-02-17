@@ -8,6 +8,10 @@ extend google.protobuf.MethodOptions {
   HumansWhoCanRpc humans_who_can_rpc = 50001;
 }
 
+extend google.protobuf.ServiceOptions {
+  Router router = 50000;
+}
+
 enum HumansWhoCanRpc {
   HUMANS_WHO_CAN_RPC_UNSPECIFIED = 0;
   HUMANS_WHO_CAN_RPC_CONTRIBUTORS_WITH_APPROVAL = 1;
@@ -18,4 +22,8 @@ enum HumansWhoCanRpc {
 message Handler {
   string path = 1;
   string method = 2;
+}
+
+message Router {
+  string name = 1;
 }
