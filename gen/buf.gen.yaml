@@ -4,6 +4,8 @@ managed:
   enabled: true
   go_package_prefix:
     default: github.com/rsturla/platform-contracts/gen/go
+    except:
+      - buf.build/googleapis/googleapis
 plugins:
   - plugin: buf.build/protocolbuffers/go:v1.32.0
     out: ./go
